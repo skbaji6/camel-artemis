@@ -1,4 +1,4 @@
-package org.apache.camel.artemis.anycast;
+package org.apache.camel.artemis.mongodb;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
@@ -6,7 +6,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class QueueCamelComponent {
+public class MongoCamelWriteComponent {
 
 	private static ApplicationContext context;
 
@@ -22,7 +22,7 @@ public class QueueCamelComponent {
 				public void configure() {
 					from("jms:queue:exampleQueue")
 							.delay(1000)
-							.to("file://C://Users//Sharmila//Desktop//test")
+							//.to("file://C://Users//Sharmila//Desktop//test")
 							.to("stream:out")
 							.to("mongodb:myDb?database=camelartemis&collection=Employee&operation=insert");
 				}
@@ -33,8 +33,8 @@ public class QueueCamelComponent {
 			camelContext.start();
 			for (int i = 0; i < 10; i++) {
 				System.out.println("Sending \"" + "Test Message: " + i + "\"");
-				template.sendBody("jms:queue:exampleQueue",
-						"{\"name\":\"Test"+i+"\"}");
+				template.sendBody("jms:queue:exampleQueue", "{\"name\":\"Test"
+						+ i + "\"}");
 			}
 
 			Thread.sleep(10000);
